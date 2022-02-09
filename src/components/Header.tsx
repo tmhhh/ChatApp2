@@ -1,20 +1,38 @@
-function Header() {
+interface IProps {
+  setUnit: (newUnit: string) => void;
+  unit: string;
+}
+function Header({ setUnit, unit }: IProps) {
   return (
-    <div className="flex w-full mt-5 ">
-      <div className="ml- 10 current__location flex justify-between w-1/4 ml-5">
-        <h3 className="text-2xl font-normal		">District 7</h3>
-        <button className="current__location__icon">
-          <i className="fas fa-location-arrow"></i>
-        </button>
-      </div>
-      <div className="flex justify-between flex-1 ml-10">
+    <div className="flex flex-1  ">
+      <div className="flex justify-between flex-1 ml-5">
         <div className="view__options flex  ">
-          <h4 className="text-lg font-bold	">Today</h4>
-          <h4 className="text-lg font-bold ml-5	">Week</h4>
+          <h4 className="text-lg font-bold cursor-pointer	">Today</h4>
+          <h4 className="text-lg font-bold ml-5	cursor-pointer">Week</h4>
         </div>
-        <div className="temp__types flex mr-10">
-          <h4 className="text-lg font-bold">F</h4>
-          <h4 className="ml-5 text-lg font-bold">C</h4>
+        <div className="temp__types flex mr-10 items-center">
+          <h4
+            onClick={() => setUnit("C")}
+            className={`p-2 rounded-2xl flex items-center justify-center w-[30px] h-[30px]  text-lg font-bold cursor-pointer
+             ${
+               unit === "C"
+                 ? ` bg-[black] text-[white] `
+                 : ` bg-[white] text-[black] `
+             }`}
+          >
+            &#8451;
+          </h4>
+          <h4
+            onClick={() => setUnit("F")}
+            className={`p-2 rounded-2xl flex items-center justify-center w-[30px] h-[30px]  text-lg font-bold cursor-pointer
+            ${
+              unit === "F"
+                ? ` bg-[black] text-[white] `
+                : ` bg-[white] text-[black] `
+            }`}
+          >
+            &#8457;
+          </h4>
         </div>
       </div>
     </div>
