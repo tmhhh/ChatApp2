@@ -61,5 +61,10 @@ export interface IWeatherData {
 export interface IWeatherContext {
   weatherData: IWeatherData;
   unit: string;
+  location: string;
   setUnit: (newUnit: string) => void;
+  getWeatherData: (lon: number, lat: number) => void;
+  getLocationName: (lon: number, lat: number) => void;
+  todayOrWeek: string;
+  setTodayOrWeek: (value: string) => void;
 }

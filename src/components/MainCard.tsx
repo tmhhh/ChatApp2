@@ -11,13 +11,31 @@ interface IProps {
     main: String;
     description: String;
   }[];
+  location: string;
+  getWeatherData: (lon: number, lat: number) => void;
+  getLocationName: (lon: number, lat: number) => void;
 }
-function MainCard({ temp, weather }: IProps) {
+function MainCard({
+  temp,
+  weather,
+  getWeatherData,
+  getLocationName,
+  location,
+}: IProps) {
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((e: GeolocationPosition) => {
+        getWeatherData(e.coords.longitude, e.coords.latitude);
+        getLocationName(e.coords.longitude, e.coords.latitude);
+      });
+    }
+  };
   return weather.length > 0 ? (
     <div className="w-1/4 h-full flex flex-col bg-[#ffff] rounded-2xl  p-7">
       <div className=" flex items-center justify-between w-full ">
-        <h3 className="text-2xl font-normal	bg-[#ffff]	">District 7</h3>
+        <h3 className="text-2xl font-normal	bg-[#ffff]	">{location}</h3>
         <button
+          onClick={getLocation}
           data-tooltips="Your location"
           className="after:content-['Location'] after:transition-all after:ease-in-out after:duration-500 after:text-[#ffff] after:p-2 text-md after:font-bold  after:bg-[#111] after:rounded-xl after:absolute after:top-[90%] hover:after:top-[100%]  after:left-0 relative rounded-2xl bg-[#f6f6f8] p-2 hover:after:opacity-100 hover:after:visible after:opacity-0 after:invisible hover:bg-[#e9e9e9]"
         >
@@ -51,7 +69,7 @@ function MainCard({ temp, weather }: IProps) {
       <p className="text-lg font-medium mt-7 text-center">
         {new Date().toString().split(" ")[0] + ", " + convertToTime()}
       </p>
-      <div className="flex mt-7 items-center">
+      <div className="flex mt-7 items-center  justify-center">
         <div className="w-24 h-24">
           <img
             className="w-full h-full"
@@ -59,7 +77,7 @@ function MainCard({ temp, weather }: IProps) {
             alt=""
           />
         </div>
-        <div className="flex flex-col ">
+        <div className="flex flex-col  ">
           <p className="text-lg font-medium">{weather[0].main}</p>
           <p className="">{weather[0].description}</p>
         </div>

@@ -12,22 +12,44 @@ import DetailCard from "./components/DetailCard";
 import { Context } from "./context";
 
 function App() {
-  const { weatherData, unit, setUnit } = useContext(Context);
-  console.log({ unit });
+  const {
+    weatherData,
+    unit,
+    setUnit,
+    getWeatherData,
+    getLocationName,
+    location,
+    todayOrWeek,
+    setTodayOrWeek,
+  } = useContext(Context);
   return (
     <div className="App bg-[#f6f6f8] h-screen ">
       <Container>
-        <MainCard {...weatherData.current} />
+        <MainCard
+          location={location}
+          {...weatherData.current}
+          getWeatherData={getWeatherData}
+          getLocationName={getLocationName}
+        />
         <MainBoard>
-          <Header unit={unit} setUnit={setUnit} />
+          <Header
+            todayOrWeek={todayOrWeek}
+            setTodayOrWeek={setTodayOrWeek}
+            unit={unit}
+            setUnit={setUnit}
+          />
           <SubCardContainer>
-            {weatherData.daily.length > 0 ? (
-              weatherData.daily.map((e: any, index: number) => (
-                <SubCard key={index} unit={unit} {...e} />
-              ))
-            ) : (
-              <div>None</div>
-            )}
+            {todayOrWeek !== "today"
+              ? weatherData.daily.length > 0 &&
+                weatherData.daily.map((e: any, index: number) => (
+                  <SubCard key={index} unit={unit} {...e} />
+                ))
+              : weatherData.hourly.length > 0 &&
+                weatherData.hourly
+                  .filter((e: any, index: number) => index < 8)
+                  .map((e: any, index: number) => (
+                    <SubCard key={index} unit={unit} {...e} />
+                  ))}
           </SubCardContainer>
           <UV />
           <DetailCard

@@ -1,6 +1,7 @@
 export const API_URL = "https://api.openweathermap.org/data/2.5/onecall";
 export const API_KEY = "1644e9db234a4af5a008eec252dd6c04";
 export const WEATHER_IMG_URL = "https://rapid-weather.vercel.app/weather/";
+export const LOCATION_NAME_API_URL = `http://api.openweathermap.org/geo/1.0/reverse`;
 export const animations = [
   {
     id: "2",
@@ -33,3 +34,7 @@ export const animations = [
     image: "/image/cloud.jpg",
   },
 ];
+export const defaultLocation = {
+  lon: 105.804817,
+  lat: 21.028511,
+};
