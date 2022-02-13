@@ -1,3 +1,5 @@
+import Counter from "./Counter";
+
 interface IWindProps {
   detailName: string;
   detailStat: number;
@@ -16,7 +18,7 @@ function DetailCard({
     <div className="rounded-2xl  w-[calc(100%/3-10px)] flex flex-col  shadow-md p-5 h-[200px] bg-[#ffff]">
       <h3 className="mb-5 text-lg font-normal">{detailName}</h3>
       <p className="flex items-center mb-5">
-        <span className="text-5xl	font-bold mr-3">{detailStat}</span>
+        <Counter className="text-5xl	font-bold mr-3" value={detailStat} />
         <span>{detailUnit}</span>
       </p>
       <div className="flex items-center ">

@@ -1,6 +1,6 @@
 import { animations, WEATHER_IMG_URL } from "../constants";
-import { convertToTime } from "../utils";
-
+import { convertToFahrenheit, convertToTime } from "../utils";
+import React from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 interface IProps {
@@ -12,26 +12,33 @@ interface IProps {
     description: String;
   }[];
   location: string;
+  unit: string;
   getWeatherData: (lon: number, lat: number) => void;
   getLocationName: (lon: number, lat: number) => void;
+  oldTempRef: { current: number };
 }
 function MainCard({
   temp,
   weather,
   getWeatherData,
   getLocationName,
+  unit,
   location,
+  oldTempRef,
 }: IProps) {
+  console.log("Main");
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((e: GeolocationPosition) => {
+        localStorage.setItem("lon", e.coords.longitude.toString());
+        localStorage.setItem("lat", e.coords.latitude.toString());
         getWeatherData(e.coords.longitude, e.coords.latitude);
         getLocationName(e.coords.longitude, e.coords.latitude);
       });
     }
   };
-  return weather.length > 0 ? (
-    <div className="w-1/4 h-full flex flex-col bg-[#ffff] rounded-2xl  p-7">
+  return (
+    <div className="relative w-1/4 h-full flex flex-col bg-[#ffff] rounded-2xl  p-7 items-center">
       <div className=" flex items-center justify-between w-full ">
         <h3 className="text-2xl font-normal	bg-[#ffff]	">{location}</h3>
         <button
@@ -56,17 +63,39 @@ function MainCard({
               ?.url || {}
           }
           className="w-48 h-48 inline-block"
-        >
-          {/* <Controls
-            visible={true}
-            buttons={["play", "repeat", "frame", "debug"]}
-          /> */}
-        </Player>
+        ></Player>
       </div>
-      <p className="text-6xl font-medium mt-7 text-center">
-        {Math.round(temp)}&#8451;
-      </p>
-      <p className="text-lg font-medium mt-7 text-center">
+
+      <div className="relative flex justify-center ">
+        <p
+          key={Math.random()}
+          // style={{
+          //   ["--oldTemp" as string]: .toString(),
+          // }}
+          className={`${
+            oldTempRef.current !== 0 ? "temperature-animation" : ""
+          } relative text-6xl font-medium mt-7 w-full text-center
+        
+          `}
+        >
+          {unit === "C" ? (
+            <>
+              {Math.round(temp)} <sup>ºC</sup>
+            </>
+          ) : (
+            <>
+              {Math.round(convertToFahrenheit(temp))} <sup>ºF</sup>
+            </>
+          )}
+        </p>
+        <span
+          key={new Date().getTime()}
+          className=" absolute old-temperature-animation text-6xl font-medium mt-7 "
+        >
+          {oldTempRef.current !== 0 && Math.round(oldTempRef.current)}
+        </span>
+      </div>
+      <p className="text-lg font-medium mt-10 text-center">
         {new Date().toString().split(" ")[0] + ", " + convertToTime()}
       </p>
       <div className="flex mt-7 items-center  justify-center">
@@ -90,9 +119,7 @@ function MainCard({
         />
       </div>
     </div>
-  ) : (
-    <></>
   );
 }
 
-export default MainCard;
+export default React.memo(MainCard);

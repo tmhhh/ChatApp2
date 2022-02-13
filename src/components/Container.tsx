@@ -5,7 +5,7 @@ interface IContainerProps {
 }
 function Container({ children }: IContainerProps) {
   return (
-    <div className="w-full items-start flex-wrap max-h-[calc(100vh)] h-full flex ">
+    <div className="w-full relative items-start flex-wrap max-h-[calc(100vh)] h-full flex ">
       {children}
     </div>
   );

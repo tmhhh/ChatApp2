@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createContext, ReactNode, useState } from "react";
 import {
   API_KEY,
@@ -10,11 +10,12 @@ import {
 import { IWeatherContext, IWeatherData } from "../types";
 
 const WeatherDefaultData = {
+  isLoading: true,
   name: "",
   lat: 0,
   lon: 0,
   current: {
-    dt: 0,
+    dt: new Date().getTime(),
     sunrise: 0,
     sunset: 0,
     temp: 0,
@@ -39,8 +40,11 @@ export const Context = createContext<IWeatherContext>({
   setUnit: () => {},
   getWeatherData: () => {},
   getLocationName: () => {},
-  todayOrWeek: "today",
+  todayOrWeek: "week",
   setTodayOrWeek: () => {},
+  oldTempRef: {
+    current: 0,
+  },
 });
 interface IContext {
   children: ReactNode;
@@ -51,9 +55,12 @@ function ContextProvider({ children }: IContext) {
   const [location, setLocation] = useState<string>("Ha Noi");
   const [unit, setUnit] = useState("C");
   const [todayOrWeek, setTodayOrWeek] = useState<string>("today");
+  const oldTempRef = useRef<number>(0);
+
+  //
   const getWeatherData = async (
-    lon: number = defaultLocation.lon,
-    lat: number = defaultLocation.lat
+    lon: number = +localStorage.getItem("lon")! || defaultLocation.lon,
+    lat: number = +localStorage.getItem("lat")! || defaultLocation.lat
   ) => {
     try {
       const res: AxiosResponse<IWeatherData> = await axios.get(API_URL, {
@@ -66,14 +73,16 @@ function ContextProvider({ children }: IContext) {
       });
 
       console.log(res.data);
-      if (res.data) setWeatherData(res.data);
+      if (res.data) setWeatherData({ ...res.data, isLoading: false });
     } catch (error) {
       console.log(error);
     }
   };
+
+  //
   const getLocationName = async (
-    lon: number = defaultLocation.lon,
-    lat: number = defaultLocation.lat
+    lon: number = +localStorage.getItem("lon")! || defaultLocation.lon,
+    lat: number = +localStorage.getItem("lat")! || defaultLocation.lat
   ) => {
     try {
       const res = await axios.get(LOCATION_NAME_API_URL, {
@@ -93,6 +102,9 @@ function ContextProvider({ children }: IContext) {
     getWeatherData();
     getLocationName();
   }, []);
+  const timeRef = useRef<NodeJS.Timeout | number | null>(null);
+  const speed = 10;
+
   return (
     <Context.Provider
       value={{
@@ -104,6 +116,7 @@ function ContextProvider({ children }: IContext) {
         location,
         todayOrWeek,
         setTodayOrWeek,
+        oldTempRef,
       }}
     >
       {children}

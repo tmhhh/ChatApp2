@@ -1,11 +1,23 @@
+import { convertToFahrenheit } from "../utils";
+
 interface IProps {
   setUnit: (newUnit: string) => void;
   setTodayOrWeek: (value: string) => void;
   todayOrWeek: string;
   unit: string;
+  temp: number;
+  oldTempRef: {
+    current: number | null;
+  };
 }
-function Header({ setUnit, unit, setTodayOrWeek, todayOrWeek }: IProps) {
-  console.log({ todayOrWeek });
+function Header({
+  setUnit,
+  unit,
+  setTodayOrWeek,
+  todayOrWeek,
+  oldTempRef,
+  temp,
+}: IProps) {
   return (
     <div className="flex flex-1  ">
       <div className="flex justify-between flex-1 ml-5">
@@ -33,7 +45,10 @@ function Header({ setUnit, unit, setTodayOrWeek, todayOrWeek }: IProps) {
         </div>
         <div className="temp__types flex mr-10 items-center">
           <h4
-            onClick={() => setUnit("C")}
+            onClick={() => {
+              oldTempRef.current = convertToFahrenheit(temp);
+              setUnit("C");
+            }}
             className={`transition-all duration-500 ease-in-out p-2 rounded-2xl flex items-center justify-center w-[30px] h-[30px]  text-lg font-bold cursor-pointer
              ${
                unit === "C"
@@ -44,7 +59,10 @@ function Header({ setUnit, unit, setTodayOrWeek, todayOrWeek }: IProps) {
             &#8451;
           </h4>
           <h4
-            onClick={() => setUnit("F")}
+            onClick={() => {
+              oldTempRef.current = temp;
+              setUnit("F");
+            }}
             className={`transition-all duration-500 ease-in-out p-2 rounded-2xl flex items-center justify-center w-[30px] h-[30px]  text-lg font-bold cursor-pointer
             ${
               unit === "F"

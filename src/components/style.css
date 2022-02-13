@@ -1,0 +1,53 @@
+.temperature-animation {
+  z-index: 12;
+  animation: slicing-number 0.3s forwards;
+  background-color: #fff;
+  /* animation-delay: 3s; */
+}
+.temperature-animation::before {
+  content: var(--oldTemp);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  top: 0;
+}
+.old-temperature-animation {
+  z-index: 10;
+  top: 0;
+  left: 0;
+  /* left: calc((304px - 128.38px) / 2); */
+  opacity: 1;
+  visibility: visible;
+  animation: remove-number 0.3s forwards;
+}
+@keyframes slicing-number {
+  from {
+    transform: translateY(70%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes remove-number {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    /* transform: translate(-95%, -195%); */
+  }
+}
+.progress {
+  /* --rotationValue: 15; */
+  --rotationDeg: calc((var(--rotationValue) * 180 / 15) * 1deg + 180deg);
+  transform-origin: 50% 100%;
+  animation: rotate 1s linear forwards;
+  /* transform: rotate(180deg); */
+}
+@keyframes rotate {
+  from {
+    transform: rotate(180deg);
+  }
+  to {
+    transform: rotate(var(--rotationDeg));
+  }
+}

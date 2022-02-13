@@ -6,7 +6,9 @@ interface ISubCardContainer {
 
 function SubCardContainer({ children }: ISubCardContainer) {
   return (
-    <div className="w-full  flex justify-evenly flex-wrap ">{children}</div>
+    <div className="min-h-[168px] h-[168px] w-full  flex justify-evenly flex-wrap ">
+      {children}
+    </div>
   );
 }
 

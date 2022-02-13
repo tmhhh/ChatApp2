@@ -1,4 +1,5 @@
 export interface IWeatherData {
+  isLoading: boolean;
   name: string;
   lat: number;
   lon: number;
@@ -67,4 +68,7 @@ export interface IWeatherContext {
   getLocationName: (lon: number, lat: number) => void;
   todayOrWeek: string;
   setTodayOrWeek: (value: string) => void;
+  oldTempRef: {
+    current: number;
+  };
 }
