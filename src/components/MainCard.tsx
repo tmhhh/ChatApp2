@@ -73,7 +73,7 @@ function MainCard({
           //   ["--oldTemp" as string]: .toString(),
           // }}
           className={`${
-            oldTempRef.current !== 0 ? "temperature-animation" : ""
+            oldTempRef.current !== 0 ? "slicing-animation" : ""
           } relative text-6xl font-medium mt-7 w-full text-center
         
           `}
@@ -90,7 +90,7 @@ function MainCard({
         </p>
         <span
           key={new Date().getTime()}
-          className=" absolute old-temperature-animation text-6xl font-medium mt-7 "
+          className=" absolute old-slicing-animation text-6xl font-medium mt-7 "
         >
           {oldTempRef.current !== 0 && Math.round(oldTempRef.current)}
         </span>

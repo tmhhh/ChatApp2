@@ -1,10 +1,10 @@
-.temperature-animation {
+.slicing-animation {
   z-index: 12;
   animation: slicing-number 0.3s forwards;
   background-color: #fff;
   /* animation-delay: 3s; */
 }
-.temperature-animation::before {
+.slicing-animation::before {
   content: var(--oldTemp);
   position: absolute;
   top: 0;
@@ -12,7 +12,7 @@
   bottom: 0;
   top: 0;
 }
-.old-temperature-animation {
+.old-slicing-animation {
   z-index: 10;
   top: 0;
   left: 0;

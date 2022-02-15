@@ -52,16 +52,28 @@ function App() {
                 {todayOrWeek !== "today"
                   ? weatherData.daily.length > 0 &&
                     weatherData.daily.map((e: any, index: number) => (
-                      <SubCard key={index + Math.random()} unit={unit} {...e} />
+                      <SubCard
+                        key={index}
+                        unit={unit}
+                        {...e}
+                        title={new Date(e.dt * 1000).toString().split(" ")[0]}
+                      />
                     ))
                   : weatherData.hourly.length > 0 &&
                     weatherData.hourly
                       .filter((e: any, index: number) => index < 8)
                       .map((e: any, index: number) => (
                         <SubCard
-                          key={index + Math.random()}
+                          key={index}
                           unit={unit}
                           {...e}
+                          title={new Date(e.dt * 1000).toLocaleTimeString(
+                            "en-us",
+                            {
+                              hour: "numeric",
+                              hour12: true,
+                            }
+                          )}
                         />
                       ))}
               </SubCardContainer>

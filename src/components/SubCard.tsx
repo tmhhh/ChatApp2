@@ -18,7 +18,7 @@ function SubCard({ temp: { min, max }, dt, weather, unit, temp }: IProps) {
     <div className="h-full shadow-md rounded-3xl flex flex-col w-[100px] items-center  py-5 bg-[#ffff] rounded-2xl ">
       {typeof temp === "object" ? (
         <>
-          <h5 className="text-lg font-normal ">
+          <h5 key={0} className="slicing-animation text-lg font-normal ">
             {new Date(dt * 1000).toString().split(" ")[0]}
           </h5>
           <div className="w-[60px] mb-4 flex-1 ">
@@ -37,12 +37,18 @@ function SubCard({ temp: { min, max }, dt, weather, unit, temp }: IProps) {
             /> */}
           </div>
           <div className="flex ">
-            <p className="temperature text-md font-medium text-slate-400 mr-3	">
+            <p
+              key={Math.random()}
+              className="slicing-animation text-md font-medium text-slate-400 mr-3	"
+            >
               {unit === "C"
                 ? Math.round(min) + "º"
                 : Math.round(convertToFahrenheit(min)) + "º"}
             </p>
-            <p className="temperature text-md font-medium">
+            <p
+              key={Math.random()}
+              className="slicing-animation text-md font-medium"
+            >
               {unit === "C"
                 ? Math.round(max) + "º"
                 : Math.round(convertToFahrenheit(max)) + "º"}
@@ -51,7 +57,7 @@ function SubCard({ temp: { min, max }, dt, weather, unit, temp }: IProps) {
         </>
       ) : (
         <>
-          <h5 className="text-lg font-normal ">
+          <h5 key={1} className="slicing-animation text-lg font-normal ">
             {new Date(dt * 1000).toLocaleTimeString("en-us", {
               hour: "numeric",
               hour12: true,
@@ -71,7 +77,10 @@ function SubCard({ temp: { min, max }, dt, weather, unit, temp }: IProps) {
             ></Player>
           </div>
           <div className="flex ">
-            <p className="temperature text-md font-medium">
+            <p
+              key={Math.random()}
+              className="slicing-animation text-md font-medium"
+            >
               {unit === "C"
                 ? Math.round(temp) + "º"
                 : Math.round(convertToFahrenheit(temp)) + "º"}
